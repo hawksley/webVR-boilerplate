@@ -1,5 +1,6 @@
 /**
  * @author dmarcos / https://github.com/dmarcos
+ * @author hawksley / https://github.com/hawksley (added phone VR support, and fixed full screen for all devices)
  *
  * It handles stereo rendering
  * If mozGetVRDevices and getVRDevices APIs are not available it gracefuly falls back to a

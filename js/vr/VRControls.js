@@ -1,7 +1,7 @@
 /**
 /**
  * @author dmarcos / https://github.com/dmarcos
- with additions by https://github.com/hawksley
+ * @author hawksley / https://github.com/hawksley (added support for many more forms of control)
  */
 
 THREE.VRControls = function ( camera, done ) {
