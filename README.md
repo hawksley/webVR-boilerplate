@@ -1,5 +1,5 @@
-# webVR-boilerplate
-This is the standard ThreeJS-based boilerplate for webVR currently being used by the eleVR team. It is a starting point for web-based VR experiences that work with the Oculus Rift as well as with smartphones + a google cardboard or similar phoneVR headset. There is also a non-VR fallback for experiencing the content without a VR device.
+# The eleVR webVR Boilerplate
+This is the standard ThreeJS-based boilerplate for webVR currently being used by [the eleVR team](http://elevr.com). It is a starting point for web-based VR experiences that work with the Oculus Rift as well as with smartphones + a google cardboard or similar phoneVR headset. There is also a non-VR fallback for experiencing the content without a VR device.
 
 The boilerplate also has gamepad and keyboard controls that are on by default. 
 
