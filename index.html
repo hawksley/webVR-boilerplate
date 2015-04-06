@@ -69,33 +69,36 @@ It has been developed with the help of a great many people including (but not li
 		var scene = new THREE.Scene();
 
 		//Create a three.js camera
-		var camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 1, 10000 );
+		var camera = new THREE.PerspectiveCamera( 110, window.innerWidth / window.innerHeight, 2, 10000 );
+		scene.add(camera);
 
 		//Apply VR headset positional data to camera.
 		var controls = new THREE.VRControls( camera );
+		// controls.enableGamepad(false);
+		// controls.enableWASD(false);
+		// controls.enableArrows(false);
 
 		//Apply VR stereo rendering to renderer
 		var effect = new THREE.VREffect( renderer );
 		effect.setSize( window.innerWidth, window.innerHeight );
 
 		/*
-		Create and position 3d objects
+		Create, position, and add 3d objects
 		*/
-		var geometry = new THREE.TetrahedronGeometry(10);
-		var material = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: true} );
-		var tetrahedron = new THREE.Mesh( geometry, material );
+		var geometry = new THREE.DodecahedronGeometry(10);
+		var material = new THREE.MeshNormalMaterial();
+		var dodecahedron = new THREE.Mesh( geometry, material );
 
-		tetrahedron.position.z = -20;
-
-		// Add object mesh(es) to demo three.js scene
-		scene.add( tetrahedron );
+		dodecahedron.position.z = -20;
+		scene.add(dodecahedron);
 
 		/*
 		Request animation frame loop function
 		*/
 		function animate() {
 			// Apply any desired changes for the next frame. In this case, we rotate our object.
-			tetrahedron.rotation.x += .01;
+			dodecahedron.rotation.x += .01;
+			dodecahedron.rotation.y += .005;
 
 			//Update VR headset position and apply to camera.
 			controls.update();
@@ -122,7 +125,7 @@ It has been developed with the help of a great many people including (but not li
 	    event.preventDefault();
 
 	    if (event.keyCode == 90) { // z
-	    	controls.zeroSensor(); //zero rotation
+	    	controls.resetSensor(); //zero rotation
 	    } else if (event.keyCode == 70 || event.keyCode == 13) { //f or enter
 	    	effect.setFullScreen(true) //fullscreen
 	    }

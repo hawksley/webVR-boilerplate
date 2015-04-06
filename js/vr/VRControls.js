@@ -25,14 +25,10 @@ THREE.VRControls = function ( camera, done ) {
 			}
 
 			control.active = (sign === 1);
-			if (control.index <= 2){
+			if (self.isWASD && control.index <= 2){
 				controls.manualRotateRate[control.index] += sign * control.sign;
-			}
-			else if (control.index <= 5) {
+			} else if (self.isArrows && control.index <= 5) {
 				controls.manualMoveRate[control.index - 3] += sign * control.sign;
-			}
-			else if (control.index <= 8) {
-				controls.manualQuatRate[control.index - 6] += sign * control.sign;
 			}
 		}
 
@@ -131,6 +127,22 @@ THREE.VRControls = function ( camera, done ) {
 	this.manualMoveRate = new Float32Array([0, 0, 0]);
 	this.updateTime = 0;
 
+	this.isGamepad = true;
+	this.isArrows = true;
+	this.isWASD = true;
+
+	this.enableGamepad = function(isGamepad) {
+		this.isGamepad = isGamepad;
+	}
+
+	this.enableArrows = function(isArrows) {
+		this.isArrows = isArrows;
+	}
+
+	this.enableWASD = function(isWASD) {
+		this.isWASD = isWASD;
+	}
+
 	this.update = function() {
 		var camera = this._camera;
 		var vrState = this.getVRState();
@@ -142,32 +154,38 @@ THREE.VRControls = function ( camera, done ) {
 		/*
 		Get controller button info
 		*/
-		var j;
+		// if (this.isGamepad) {
+			var j;
 
-		for (j in this.controllers) {
-			var controller = this.controllers[j];
+			for (j in this.controllers) {
+				var controller = this.controllers[j];
 
-			this.manualMoveRate[1] = -1 * Math.round(controller.axes[0]);
-			this.manualMoveRate[0] = Math.round(controller.axes[1]);
-			this.manualRotateRate[1] = -1 * Math.round(controller.axes[2]);
-			this.manualRotateRate[0] = -1 * Math.round(controller.axes[3]);
-		}
+				this.manualMoveRate[1] = -1 * Math.round(controller.axes[0]);
+				this.manualMoveRate[0] = Math.round(controller.axes[1]);
+				this.manualRotateRate[1] = -1 * Math.round(controller.axes[2]);
+				this.manualRotateRate[0] = -1 * Math.round(controller.axes[3]);
+			}
+		// }
 
-	  var interval = (newTime - oldTime) * 0.001;
-	  var update = new THREE.Quaternion(this.manualRotateRate[0] * interval,
-	                               this.manualRotateRate[1] * interval,
-	                               this.manualRotateRate[2] * interval, 1.0);
-	  update.normalize();
-		manualRotation.multiplyQuaternions(manualRotation, update);
+		// if (this.isGamepad || this.isWASD) {
+		  var interval = (newTime - oldTime) * 0.001;
+		  var update = new THREE.Quaternion(this.manualRotateRate[0] * interval,
+		                               this.manualRotateRate[1] * interval,
+		                               this.manualRotateRate[2] * interval, 1.0);
+		  update.normalize();
+			manualRotation.multiplyQuaternions(manualRotation, update);
+		// }
 
-		var offset = new THREE.Vector3();
-		if (this.manualMoveRate[0] != 0 || this.manualMoveRate[1] != 0 || this.manualMoveRate[2] != 0){
-				offset = getFwdVector().multiplyScalar( interval * this.manualMoveRate[0])
-						.add(getRightVector().multiplyScalar( interval * this.manualMoveRate[1]))
-						.add(getUpVector().multiplyScalar( interval * this.manualMoveRate[2]));
-		}
+		// if (this.isGamepad || this.isArrows) {
+			var offset = new THREE.Vector3();
+			if (this.manualMoveRate[0] != 0 || this.manualMoveRate[1] != 0 || this.manualMoveRate[2] != 0){
+					offset = getFwdVector().multiplyScalar( interval * this.manualMoveRate[0])
+							.add(getRightVector().multiplyScalar( interval * this.manualMoveRate[1]))
+							.add(getUpVector().multiplyScalar( interval * this.manualMoveRate[2]));
+			}
 
-		camera.position = camera.position.add(offset);
+			camera.position = camera.position.add(offset);
+		// }
 
 		if ( camera ) {
 			if ( !vrState ) {
@@ -192,12 +210,12 @@ THREE.VRControls = function ( camera, done ) {
 		}
 	};
 
-	this.zeroSensor = function() {
+	this.resetSensor = function() {
 		var vrInput = this._vrInput;
 		if (!vrInput) {
 			return null;
 		}
-		vrInput.zeroSensor();
+		vrInput.resetSensor();
 	};
 
 	this.getVRState = function() {
