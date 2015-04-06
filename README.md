@@ -34,5 +34,5 @@ VREffect.js [(forked from MozVR version)](https://github.com/MozVR/vr-web-exampl
 # Acknowledgements
 This boilerplate is based on [Mozilla's boilerplate](https://github.com/MozVR/vr-web-examples/tree/master/threejs-vr-boilerplate)
 
-It has been developed with the advice, help, and code contributions of a great many people including (but not limited to) the other members of the eleVR team (Emily Eifler and Vi Hart), [Andrew Lutomirski](https://github.com/amluto), Henry Segerman, and the Firefox webVR team.
+It has been developed with the advice, help, and contributions of a great many people including (but not limited to) the other members of the eleVR team (Emily Eifler and Vi Hart), [Andrew Lutomirski](https://github.com/amluto), and Henry Segerman.
 
