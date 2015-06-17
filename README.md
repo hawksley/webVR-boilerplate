@@ -16,11 +16,19 @@ Navigation Controls:
 
 # Explanation of Files:
 index.html
-- A simple html file with a very basic example THREE.js experience built in. 
-- When using this as a boilerplate, you would generally only modify this file.
+- A simple html file. 
+- By default, it points at demoWebVR.js, which contains a demo webVR experience
+- You can change it to point at blankWebVR.js, which is clearly annotated for creating your own experience
+
+demoWebVR.js
+- A basic demo THREE.js experience is written into this file, you can use it as a guideline.
+
+blankWebVR.js
+- A clearly annotated boilerplate file that you can add code to to create your own webVR project from scratch
 
 [THREE.js (three.min.js)](https://github.com/mrdoob/three.js/)
 - WebGL helper library that lets you create webGL experiences using JS.
+
 PhoneVR.js (special thanks to [Andrew Lutomirski](https://github.com/amluto) for helping with this)
 - Detects whether a device with orientation is being used and turns phone orientation data into a quaternion.
 
@@ -40,11 +48,13 @@ VREffect.js [(forked from MozVR version)](https://github.com/MozVR/vr-web-exampl
   - enter "about:config" into your address bar
   - use the search tool to find "vr"
   - then set "dom.vr.enabled" to "true"
-3. Edit myWebVR.js in the webVR-boilerplate/js folder to create your scene.
+3. Edit demoWebVR.js in the webVR-boilerplate/js folder to create your scene.
   - It has some sample code already to get you started
   - We assume that you will use three.js, a wrapper around webGL to create your VR project.
       You can find some great docs for three.js here: http://threejs.org/docs/
   - Always Remember: Google is your friend!
+3a. OR change index.html to point at blankWebVR.js in the webVR-boilerplate/js folder and create your scene from scratch
+  - blankWebVR.js contains no sample code, but you can always cross reference demoWebVR.js if you would like some
 
 Bonus: Set up your computer to serve up your website to localhost, this allows you to do things like experiment with image and video textures and test-run your stuff on your mobile device. The fastest and simplest is probably python simple server (default port is 8000):
 
