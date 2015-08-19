@@ -4,8 +4,10 @@
  * @author hawksley / https://github.com/hawksley (added support for many more forms of control)
  */
 
-THREE.VRControls = function ( camera, done ) {
+THREE.VRControls = function ( camera, speed, done ) {
 	this.phoneVR = new PhoneVR();
+
+	this.speed = speed || 3; // 3 is just a good default speed multiplier
 
 	//---game controller stuff---
 	this.haveEvents = 'ongamepadconnected' in window;
@@ -179,9 +181,9 @@ THREE.VRControls = function ( camera, done ) {
 		// if (this.isGamepad || this.isArrows) {
 			var offset = new THREE.Vector3();
 			if (this.manualMoveRate[0] != 0 || this.manualMoveRate[1] != 0 || this.manualMoveRate[2] != 0){
-					offset = getFwdVector().multiplyScalar( interval * 3 * this.manualMoveRate[0])
-							.add(getRightVector().multiplyScalar( interval * 3 * this.manualMoveRate[1]))
-							.add(getUpVector().multiplyScalar( interval * 3 * this.manualMoveRate[2]));
+					offset = getFwdVector().multiplyScalar( interval * this.speed * this.manualMoveRate[0])
+							.add(getRightVector().multiplyScalar( interval * this.speed * this.manualMoveRate[1]))
+							.add(getUpVector().multiplyScalar( interval * this.speed * this.manualMoveRate[2]));
 			}
 
 			camera.position = camera.position.add(offset);
