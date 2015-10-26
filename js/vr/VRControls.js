@@ -214,7 +214,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 			camera.quaternion.copy(totalRotation);
 
 			if (state.position !== null) {
-				camera.position.copy( state.position ).multiplyScalar( scope.scale );
+				camera.position.copy( state.position ).multiplyScalar( this.scale );
 			}
 		}
 	};
