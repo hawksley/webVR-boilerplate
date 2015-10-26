@@ -136,7 +136,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 	// the Rift SDK returns the position in meters
 	// this scale factor allows the user to define how meters
 	// are converted to scene units.
-	this.scale = 1;
+	this.scale = 100;
 
 	this.enableGamepad = function(isGamepad) {
 		this.isGamepad = isGamepad;
@@ -191,8 +191,6 @@ THREE.VRControls = function ( camera, speed, done ) {
 							.add(getRightVector().multiplyScalar( interval * this.speed * this.manualMoveRate[1]))
 							.add(getUpVector().multiplyScalar( interval * this.speed * this.manualMoveRate[2]));
 			}
-
-			camera.position = camera.position.add(offset);
 		// }
 
 		if ( camera ) {
@@ -215,6 +213,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 			if (state.position !== null) {
 				camera.position.copy( state.position ).multiplyScalar( this.scale );
+				camera.position = camera.position.add(offset);
 			}
 		}
 	};
