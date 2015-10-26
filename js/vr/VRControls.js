@@ -191,11 +191,13 @@ THREE.VRControls = function ( camera, speed, done ) {
 							.add(getRightVector().multiplyScalar( interval * this.speed * this.manualMoveRate[1]))
 							.add(getUpVector().multiplyScalar( interval * this.speed * this.manualMoveRate[2]));
 			}
+
 		// }
 
 		if ( camera ) {
 			if ( !vrState ) {
 				camera.quaternion.copy(manualRotation);
+				camera.position = camera.position.add(offset);
 				return;
 			}
 
@@ -213,7 +215,6 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 			if (state.position !== null) {
 				camera.position.copy( state.position ).multiplyScalar( this.scale );
-				camera.position = camera.position.add(offset);
 			}
 		}
 	};
