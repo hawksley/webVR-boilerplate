@@ -133,6 +133,11 @@ THREE.VRControls = function ( camera, speed, done ) {
 	this.isArrows = true;
 	this.isWASD = true;
 
+	// the Rift SDK returns the position in meters
+	// this scale factor allows the user to define how meters
+	// are converted to scene units.
+	this.scale = 1;
+
 	this.enableGamepad = function(isGamepad) {
 		this.isGamepad = isGamepad;
 	}
@@ -148,6 +153,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 	this.update = function() {
 		var camera = this._camera;
 		var vrState = this.getVRState();
+		var vrInput = this._vrInput;
 		var manualRotation = this.manualRotation;
 		var oldTime = this.updateTime;
 		var newTime = Date.now();
@@ -197,18 +203,19 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 			// Applies head rotation from sensors data.
 			var totalRotation = new THREE.Quaternion();
-      var state = vrState.hmd.rotation;
-      if (vrState.hmd.rotation[0] !== 0 ||
-					vrState.hmd.rotation[1] !== 0 ||
-					vrState.hmd.rotation[2] !== 0 ||
-					vrState.hmd.rotation[3] !== 0) {
-					var vrStateRotation = new THREE.Quaternion(state[0], state[1], state[2], state[3]);
+			var state = vrInput.getState();
+      if (state.orientation !== null) {
+					var vrStateRotation = new THREE.Quaternion(state.orientation.x, state.orientation.y, state.orientation.z, state.orientation.w);
 	        totalRotation.multiplyQuaternions(manualRotation, vrStateRotation);
       } else {
         	totalRotation = manualRotation;
       }
 
 			camera.quaternion.copy(totalRotation);
+
+			if (state.position !== null) {
+				camera.position.copy( state.position ).multiplyScalar( scope.scale );
+			}
 		}
 	};
 
