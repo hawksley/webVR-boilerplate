@@ -136,7 +136,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 	// the Rift SDK returns the position in meters
 	// this scale factor allows the user to define how meters
 	// are converted to scene units.
-	this.scale = 100;
+	this.scale = 1;
 
 	this.enableGamepad = function(isGamepad) {
 		this.isGamepad = isGamepad;
