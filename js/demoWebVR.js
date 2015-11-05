@@ -2,7 +2,6 @@
 var renderer = new THREE.WebGLRenderer( { antialias: true } );
 
 // Append the canvas element created by the renderer to document body element.
-renderer.domElement.style.transform = "scaleX(-1)";
 document.body.appendChild( renderer.domElement );
 
 //Create a three.js scene
@@ -37,13 +36,6 @@ var z = Math.sin(-3/2*pi/1000*tetrahedronIncrement)*40;
 var x = Math.cos(-3/2*pi/1000*tetrahedronIncrement)*40;
 tetrahedron.position.set(x, 0, z);
 scene.add(tetrahedron);
-
-var introMesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(40, 20),
-  new THREE.MeshBasicMaterial( {color: 0xffffff, transparent: true, opacity: 1, side: THREE.DoubleSide,
-    map: THREE.ImageUtils.loadTexture('test.png')} ));
-introMesh.position.z = -20;
-introMesh.position.x = -20;
-scene.add(introMesh);
 
 var cubes = [];
 for (var i = 0; i < 10; i++) {
@@ -106,17 +98,6 @@ function onkey(event) {
   }
 };
 window.addEventListener("keydown", onkey, true);
-
-//listen for click
-document.body.addEventListener( 'click', doClickStuff);
-
-function doClickStuff(event) {
-  effect.setFullScreen(true);
-
-  if (typeof window.screen.orientation !== 'undefined' && typeof window.screen.orientation.lock === 'function') {
-    window.screen.orientation.lock('landscape-primary');
-  }
-}
 
 /*
 Handle window resizes

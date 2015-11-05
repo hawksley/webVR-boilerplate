@@ -5,7 +5,7 @@
  */
 
 THREE.VRControls = function ( camera, speed, done ) {
-	this.phoneAR = new PhoneAR();
+	this.phoneVR = new PhoneVR();
 
 	this.speed = speed || 3; // 3 is just a good default speed multiplier
 
@@ -247,8 +247,8 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 		if ( vrInput ) {
 			orientation	= vrInput.getState().orientation;
-		} else if (this.phoneAR.rotationQuat()) {
-			orientation = this.phoneAR.rotationQuat();
+		} else if (this.phoneVR.rotationQuat()) {
+			orientation = this.phoneVR.rotationQuat();
 		} else {
 			return null;
 		}
