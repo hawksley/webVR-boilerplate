@@ -4,7 +4,7 @@
 // Even Chromium on the desktop has a 'deviceorientation' event, and it will fire once with
 // all nulls.
 
-function PhoneVR() {
+function PhoneAR() {
     this.deviceAlpha = null;
     this.deviceGamma = null;
     this.deviceBeta = null;
@@ -16,18 +16,19 @@ function PhoneVR() {
     }.bind(this));
 }
 
-PhoneVR.prototype.orientationIsAvailable = function() {
+PhoneAR.prototype.orientationIsAvailable = function() {
     return this.deviceAlpha !== null;
 }
 
-PhoneVR.prototype.rotationQuat = function() {
+PhoneAR.prototype.rotationQuat = function() {
     if (!this.orientationIsAvailable())
         return null;
 
     var degtorad = Math.PI / 180; // Degree-to-Radian conversion
     var z = this.deviceAlpha * degtorad / 2;
-    var x = this.deviceBeta * degtorad / 2;
-    var y = this.deviceGamma * degtorad / 2;
+    var x = -1 * this.deviceBeta * degtorad / 2;
+    var y = -1 * (this.deviceGamma - 90) * degtorad / 2;
+
     var cX = Math.cos(x);
     var cY = Math.cos(y);
     var cZ = Math.cos(z);
@@ -63,7 +64,7 @@ PhoneVR.prototype.rotationQuat = function() {
     return deviceRotation;
 }
 
-PhoneVR.prototype.getScreenOrientation = function() {
+PhoneAR.prototype.getScreenOrientation = function() {
   switch (window.screen.orientation || window.screen.mozOrientation) {
     case 'landscape-primary':
       return 90;
