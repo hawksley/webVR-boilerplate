@@ -209,10 +209,12 @@ THREE.VRControls = function ( camera, speed, done ) {
 		// if (this.isGamepad || this.isWASD) {
 		  var interval = (newTime - oldTime) * 0.001;
 
-		var update = new THREE.Quaternion((this.manualmouseRotateRate[0] + this.manualRotateRate[0]) * interval,
-										(this.manualmouseRotateRate[1] + this.manualRotateRate[1]) * interval,
-		                               this.manualRotateRate[2] * interval, 1.0);
-		  update.normalize();
+			var update = new THREE.Quaternion(
+				(this.manualmouseRotateRate[0] + this.manualRotateRate[0]) * interval,
+				(this.manualmouseRotateRate[1] + this.manualRotateRate[1]) * interval,
+				this.manualRotateRate[2] * interval, 1.0
+			);
+			update.normalize();
 			manualRotation.multiplyQuaternions(manualRotation, update);
 		// }
 
