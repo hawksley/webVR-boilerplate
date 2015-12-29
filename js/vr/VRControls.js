@@ -8,6 +8,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 	this.phoneVR = new PhoneVR();
 
 	this.speed = speed || 3; // 3 is just a good default speed multiplier
+	this.mousespeed = 1.0;
 
 	//---game controller stuff---
 	this.haveEvents = 'ongamepadconnected' in window;
@@ -34,8 +35,32 @@ THREE.VRControls = function ( camera, speed, done ) {
 			}
 		}
 
+		function mouse(event, sign) {
+			if (!self.isMouse) {
+				// no mouse movement
+				self.manualmouseRotateRate[0] = 0;
+				self.manualmouseRotateRate[1] = 0;
+				return;
+			}
+
+			var halfwidth = window.innerWidth / 2;
+			var halfheight = window.innerHeight / 2;
+			var x_diff_from_center = (event.x - halfwidth) / halfwidth;
+			var y_diff_from_center = (event.y - halfheight) / halfheight;
+
+			self.manualmouseRotateRate[0] = sign * y_diff_from_center * self.mousespeed;
+			self.manualmouseRotateRate[1] = sign * x_diff_from_center * self.mousespeed;
+		}
+
 		document.addEventListener('keydown', function(event) { key(event, 1); }, false);
 		document.addEventListener('keyup', function(event) { key(event, -1); }, false);
+
+		document.addEventListener('mousemove', function(event) { mouse(event, -1); }, false);
+		document.addEventListener('mouseout', function() {
+			// reset rotation when mouse exits browser window
+			self.manualmouseRotateRate[0] = 0;
+			self.manualmouseRotateRate[1] = 0;
+		}, false);
 
 
 		function connecthandler(e) {
@@ -108,6 +133,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 	this._init();
 
 	this.manualRotation = new THREE.Quaternion();
+	this.manualmouseRotateRate = new THREE.Quaternion();
 
 	this.manualControls = {
 		65 : {index: 1, sign: 1, active: 0},  // a
@@ -132,6 +158,7 @@ THREE.VRControls = function ( camera, speed, done ) {
 	this.isGamepad = true;
 	this.isArrows = true;
 	this.isWASD = true;
+	this.isMouse = false;
 
 	this.enableGamepad = function(isGamepad) {
 		this.isGamepad = isGamepad;
@@ -143,6 +170,10 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 	this.enableWASD = function(isWASD) {
 		this.isWASD = isWASD;
+	}
+
+	this.enableMouse = function(isMouse) {
+		this.isMouse = isMouse;
 	}
 
 	this.update = function() {
@@ -171,8 +202,9 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 		// if (this.isGamepad || this.isWASD) {
 		  var interval = (newTime - oldTime) * 0.001;
-		  var update = new THREE.Quaternion(this.manualRotateRate[0] * interval,
-		                               this.manualRotateRate[1] * interval,
+
+		var update = new THREE.Quaternion((this.manualmouseRotateRate[0] + this.manualRotateRate[0]) * interval,
+										(this.manualmouseRotateRate[1] + this.manualRotateRate[1]) * interval,
 		                               this.manualRotateRate[2] * interval, 1.0);
 		  update.normalize();
 			manualRotation.multiplyQuaternions(manualRotation, update);
