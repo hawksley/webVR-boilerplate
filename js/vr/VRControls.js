@@ -37,7 +37,9 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 		function mouse(event, sign) {
 			if (!self.isMouse) {
-				// no mouse movement
+				// mouse rotation is not enabled,
+				//  make sure we reset the rotations in case someone disabled the feature
+				//  while the cursor was on the screen
 				self.manualmouseRotateRate[0] = 0;
 				self.manualmouseRotateRate[1] = 0;
 				return;
@@ -45,15 +47,16 @@ THREE.VRControls = function ( camera, speed, done ) {
 
 			var halfwidth = window.innerWidth / 2;
 			var halfheight = window.innerHeight / 2;
+
+			// rotations based on which side of the window center you are with your mouse cursor
+			//  diff ranges from -1.0 to +1.0
 			var x_diff_from_center = (event.x - halfwidth) / halfwidth;
 			var y_diff_from_center = (event.y - halfheight) / halfheight;
 
+			// note; this SETS the rate based on how far you are from the center (not Add like in the key() callback)
 			self.manualmouseRotateRate[0] = sign * y_diff_from_center * self.mousespeed;
 			self.manualmouseRotateRate[1] = sign * x_diff_from_center * self.mousespeed;
 		}
-
-		document.addEventListener('keydown', function(event) { key(event, 1); }, false);
-		document.addEventListener('keyup', function(event) { key(event, -1); }, false);
 
 		document.addEventListener('mousemove', function(event) { mouse(event, -1); }, false);
 		document.addEventListener('mouseout', function() {
@@ -61,6 +64,9 @@ THREE.VRControls = function ( camera, speed, done ) {
 			self.manualmouseRotateRate[0] = 0;
 			self.manualmouseRotateRate[1] = 0;
 		}, false);
+
+		document.addEventListener('keydown', function(event) { key(event, 1); }, false);
+		document.addEventListener('keyup', function(event) { key(event, -1); }, false);
 
 
 		function connecthandler(e) {
